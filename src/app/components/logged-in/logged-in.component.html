@@ -1,0 +1,32 @@
+<mat-card *ngIf="isUserLoggedIn$|async as userCredentials ;else logInFirst">
+    <ng-container *ngIf="userCredentials.accessToken">
+        <mat-card-title>You are logged in as:</mat-card-title>
+        <mat-card-content>
+            <div *ngIf="meDetails$|async as meDetails">
+                <ng-container *ngIf="meDetailsList$ | async as list">
+                    <table mat-table [dataSource]="list" class="mat-elevation-z8">
+                        <!-- Column 1 -->
+                        <ng-container matColumnDef="Key">
+                            <th mat-header-cell *matHeaderCellDef> Key </th>
+                            <td mat-cell *matCellDef="let element"> {{ element.key }} </td>
+                        </ng-container>
+                        <!-- Column 2 -->
+                        <ng-container matColumnDef="Value">
+                            <th mat-header-cell *matHeaderCellDef> Value </th>
+                            <td mat-cell *matCellDef="let element"> {{element.value}} </td>
+                        </ng-container>
+
+                        <tr mat-header-row *matHeaderRowDef="['Key', 'Value']"></tr>
+                        <tr mat-row *matRowDef="let row; columns: ['Key', 'Value'];"></tr>
+                    </table>
+                </ng-container>
+            </div>
+        </mat-card-content>
+        <mat-card-actions>
+            <button mat-raised-button color="primary" (click)="logOutUser()">Log me out</button>
+        </mat-card-actions>
+    </ng-container>
+</mat-card>
+<ng-template #logInFirst>
+    You must first log in <a routerLink="/login">here</a> to see this page
+</ng-template>
